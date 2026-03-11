@@ -66,35 +66,43 @@ function TimerDisplay({ duration, remaining }) {
             if (document.pictureInPictureElement) {
                 await document.exitPictureInPicture();
                 setIsPipActive(false);
+            } else if (document.webkitCurrentFullScreenElement || videoRef.current?.webkitPresentationMode === 'picture-in-picture') {
+                videoRef.current?.webkitSetPresentationMode('inline');
+                setIsPipActive(false);
             } else {
                 const video = videoRef.current;
                 const canvas = canvasRef.current;
 
                 if (video && canvas) {
                     // Check if captureStream is supported
-                    if (!canvas.captureStream) {
-                        alert('현재 시청 환경에서는 PIP 기능을 지원하지 않습니다.\n보다 원활한 사용을 위해 크롬이나 엣지 데스크탑 브라우저를 이용해 주세요!');
+                    const getStream = canvas.captureStream || canvas.webkitCaptureStream || canvas.mozCaptureStream;
+                    if (!getStream) {
+                        alert('현재 브라우저 환경에서는 PIP 화면 캡처 기능을 지원하지 않습니다.\n크롬 호환 브라우저를 권장합니다!');
                         return;
                     }
 
                     if (!video.srcObject) {
-                        const stream = canvas.captureStream(30);
+                        const stream = getStream.call(canvas, 30);
                         video.srcObject = stream;
-                        await video.play();
+                        await video.play().catch(console.error);
                     }
 
-                    if (!video.requestPictureInPicture) {
-                        alert('비디오 PIP 모드를 지원하지 않는 환경입니다.\n크롬이나 엣지 데스크탑 브라우저를 이용해 주세요!');
+                    if (video.requestPictureInPicture) {
+                        await video.requestPictureInPicture();
+                        setIsPipActive(true);
+                    } else if (video.webkitSupportsPresentationMode && video.webkitSupportsPresentationMode('picture-in-picture')) {
+                        // Safari 지원
+                        video.webkitSetPresentationMode('picture-in-picture');
+                        setIsPipActive(true);
+                    } else {
+                        alert('이 브라우저에서는 기능(PIP)을 지원하지 않습니다.');
                         return;
                     }
-
-                    await video.requestPictureInPicture();
-                    setIsPipActive(true);
                 }
             }
         } catch (error) {
             console.error('PIP Error:', error);
-            alert('PIP 기능을 실행할 수 없습니다.\n크롬이나 엣지 데스크탑 브라우저를 이용해 주세요!');
+            alert('PIP 기능을 실행할 수 없습니다.\n데스크탑 크롬, 엣지, 사파리를 이용해 주세요!');
         }
     };
 
@@ -106,9 +114,17 @@ function TimerDisplay({ duration, remaining }) {
             setIsPipActive(false);
         };
 
+        const handleWebKitPIPChange = () => {
+            if (video.webkitPresentationMode !== 'picture-in-picture') {
+                setIsPipActive(false);
+            }
+        };
+
         video.addEventListener('leavepictureinpicture', handleLeavePIP);
+        video.addEventListener('webkitpresentationmodechanged', handleWebKitPIPChange);
         return () => {
             video.removeEventListener('leavepictureinpicture', handleLeavePIP);
+            video.removeEventListener('webkitpresentationmodechanged', handleWebKitPIPChange);
         };
     }, []);
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Minus, Plus, Play, Pause, AlertCircle } from 'lucide-react';
+import { Minus, Plus, Play, Pause, AlertCircle, Share2 } from 'lucide-react';
 import { socket } from '../socket';
 import TimerDisplay from './TimerDisplay';
 
@@ -15,6 +15,7 @@ function Host() {
     const [remaining, setRemaining] = useState(25 * 60);
     const [status, setStatus] = useState('waiting');
     const [endTime, setEndTime] = useState(null);
+    const [showToast, setShowToast] = useState(false);
 
     const alarmAudio = React.useRef(typeof Audio !== 'undefined' ? new Audio('/alarm.mp3') : null);
 
@@ -132,12 +133,34 @@ function Host() {
         socket.emit('resetTimer', { roomId });
     };
 
+    const handleShare = () => {
+        const url = window.location.origin;
+        const appText = `Focus Together Timer\n방 코드: ${roomId}\n접속 주소: ${url}`;
+        navigator.clipboard.writeText(appText)
+            .then(() => {
+                setShowToast(true);
+                setTimeout(() => setShowToast(false), 3000);
+            })
+            .catch(err => {
+                console.error("클립보드 복사 실패:", err);
+            });
+    };
+
     return (
         <div className="setup-container">
             <div className="room-code-container">
                 <p className="room-code-label">참여용 방 코드</p>
-                <div className="room-code-box">
-                    <h2 className="room-code-text">{roomId}</h2>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="room-code-box">
+                        <h2 className="room-code-text">{roomId}</h2>
+                    </div>
+                    <button
+                        onClick={handleShare}
+                        className="share-btn"
+                        title="초대장 복사하기"
+                    >
+                        <Share2 size={24} color="white" />
+                    </button>
                 </div>
             </div>
 
@@ -207,6 +230,11 @@ function Host() {
                             홈으로
                         </button>
                     </div>
+                </div>
+            )}
+            {showToast && (
+                <div className="toast-notification">
+                    해당 방의 초대장이 클립보드에 복사되었습니다!
                 </div>
             )}
         </div>
