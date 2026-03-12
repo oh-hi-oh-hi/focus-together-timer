@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Users } from 'lucide-react';
 import { socket } from '../socket';
 import TimerDisplay from './TimerDisplay';
 
@@ -16,6 +17,7 @@ function Guest() {
     const [status, setStatus] = useState('waiting');
     const [endTime, setEndTime] = useState(null);
     const [errorMSG, setErrorMSG] = useState('');
+    const [userCount, setUserCount] = useState(1);
 
     const alarmAudio = React.useRef(typeof Audio !== 'undefined' ? new Audio('/alarm.mp3') : null);
 
@@ -94,12 +96,17 @@ function Guest() {
             setRemaining(duration);
         };
 
+        const handleUserCountUpdated = ({ count }) => {
+            setUserCount(count);
+        };
+
         socket.on('timerUpdated', handleTimerUpdated);
         socket.on('timerStarted', handleTimerStarted);
         socket.on('timerPaused', handleTimerPaused);
         socket.on('timerResumed', handleTimerResumed);
         socket.on('timerReset', handleTimerReset);
         socket.on('roomEnded', handleRoomEnded);
+        socket.on('userCountUpdated', handleUserCountUpdated);
 
         return () => {
             socket.off('timerUpdated', handleTimerUpdated);
@@ -108,6 +115,7 @@ function Guest() {
             socket.off('timerResumed', handleTimerResumed);
             socket.off('timerReset', handleTimerReset);
             socket.off('roomEnded', handleRoomEnded);
+            socket.off('userCountUpdated', handleUserCountUpdated);
         };
     }, [status, duration]);
 
@@ -169,6 +177,13 @@ function Guest() {
             {status === 'paused' && (
                 <div className="status-text" style={{ marginBottom: 'clamp(10px, 3vmin, 40px)', color: '#FF9F0A', animation: 'fadeIn 1s infinite alternate' }}>
                     호스트가 타이머를 일시정지했습니다...
+                </div>
+            )}
+
+            {status !== 'finished' && (
+                <div style={{ marginBottom: 'clamp(10px, 3vmin, 40px)', fontSize: '0.9rem', color: '#AAA', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                    <Users size={16} />
+                    현재 {userCount}명 접속 중
                 </div>
             )}
 

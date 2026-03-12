@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Minus, Plus, Play, Pause, AlertCircle, Share2 } from 'lucide-react';
+import { Minus, Plus, Play, Pause, AlertCircle, Share2, Users } from 'lucide-react';
 import { socket } from '../socket';
 import TimerDisplay from './TimerDisplay';
 
@@ -16,6 +16,7 @@ function Host() {
     const [status, setStatus] = useState('waiting');
     const [endTime, setEndTime] = useState(null);
     const [showToast, setShowToast] = useState(false);
+    const [userCount, setUserCount] = useState(1);
 
     const alarmAudio = React.useRef(typeof Audio !== 'undefined' ? new Audio('/alarm.mp3') : null);
 
@@ -57,12 +58,16 @@ function Host() {
             setEndTime(null);
             setRemaining(duration);
         };
+        const handleUserCountUpdated = ({ count }) => {
+            setUserCount(count);
+        };
 
         socket.on('participantJoined', handleParticipantJoined);
         socket.on('timerStarted', handleTimerStarted);
         socket.on('timerPaused', handleTimerPaused);
         socket.on('timerResumed', handleTimerResumed);
         socket.on('timerReset', handleTimerReset);
+        socket.on('userCountUpdated', handleUserCountUpdated);
 
         return () => {
             socket.off('participantJoined', handleParticipantJoined);
@@ -70,6 +75,7 @@ function Host() {
             socket.off('timerPaused', handleTimerPaused);
             socket.off('timerResumed', handleTimerResumed);
             socket.off('timerReset', handleTimerReset);
+            socket.off('userCountUpdated', handleUserCountUpdated);
         };
     }, [duration]);
 
@@ -161,6 +167,10 @@ function Host() {
                     >
                         <Share2 size={24} color="white" />
                     </button>
+                </div>
+                <div style={{ marginTop: '16px', fontSize: '0.9rem', color: '#AAA', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                    <Users size={16} />
+                    현재 {userCount}명 접속 중
                 </div>
             </div>
 

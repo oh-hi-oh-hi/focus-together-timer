@@ -22,6 +22,20 @@ const io = new Server(server, {
 // rooms[roomId] = { hostId, status: 'waiting'|'running', duration: number, endTime: number }
 const rooms = {};
 
+io.of("/").adapter.on("join-room", (room, id) => {
+    if (rooms[room]) {
+        const count = io.sockets.adapter.rooms.get(room)?.size || 0;
+        io.to(room).emit('userCountUpdated', { count });
+    }
+});
+
+io.of("/").adapter.on("leave-room", (room, id) => {
+    if (rooms[room]) {
+        const count = io.sockets.adapter.rooms.get(room)?.size || 0;
+        io.to(room).emit('userCountUpdated', { count });
+    }
+});
+
 const generateRoomId = () => Math.random().toString(36).substring(2, 8).toUpperCase();
 
 io.on('connection', (socket) => {
