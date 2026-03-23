@@ -37,7 +37,7 @@ function Home() {
 
     return (
         <div className="auth-container">
-            <h1 className="hero-title">Timer Together</h1>
+            <h1 className="hero-title">Focus Together</h1>
             <p className="hero-subtitle">Mac OS Vibe Real-time Synchronized Timer</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center', width: '100%', maxWidth: '300px' }}>
