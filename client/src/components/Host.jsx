@@ -190,7 +190,7 @@ function Host() {
                                 width: 'clamp(40px, 10vw, 60px)',
                                 backgroundColor: 'transparent',
                                 border: 'none',
-                                color: 'white',
+                                color: 'var(--text-color)',
                                 fontSize: 'clamp(1.1rem, 3.5vw, 1.2rem)',
                                 fontWeight: 500,
                                 textAlign: 'center',
