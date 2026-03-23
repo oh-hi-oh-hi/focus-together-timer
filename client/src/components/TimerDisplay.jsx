@@ -23,8 +23,7 @@ function TimerDisplay({ duration, remaining }) {
         return `${m}:${s}`;
     };
 
-    // PIP Canvas Drawing
-    useEffect(() => {
+    const drawCanvas = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -58,7 +57,11 @@ function TimerDisplay({ duration, remaining }) {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(formatTime(remaining), 150, 150);
+    };
 
+    // PIP Canvas Drawing
+    useEffect(() => {
+        drawCanvas();
     }, [remaining, duration, percentage, radius]);
 
     const togglePip = async () => {
@@ -84,7 +87,10 @@ function TimerDisplay({ duration, remaining }) {
                     if (!video.srcObject) {
                         const stream = getStream.call(canvas, 30);
                         video.srcObject = stream;
+                        drawCanvas(); // 강제로 프레임 생성
                         await video.play().catch(console.error);
+                    } else {
+                        drawCanvas(); // 이미 스트림이 있어도 프레임 푸시
                     }
 
                     if (video.requestPictureInPicture) {
