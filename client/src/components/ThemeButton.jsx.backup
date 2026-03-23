@@ -1,0 +1,192 @@
+import React, { useState, useEffect } from 'react';
+import './ThemeButton.css';
+
+const ThemeButton = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState('mac');
+  const [toastMessage, setToastMessage] = useState('');
+  
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [expandedTheme, setExpandedTheme] = useState(null);
+  
+  const [showCodeInput, setShowCodeInput] = useState(false);
+  const [secretCode, setSecretCode] = useState('');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('timerTheme');
+    if (savedTheme) {
+      setCurrentTheme(savedTheme);
+      applyTheme(savedTheme);
+    }
+    
+    const unlockedStat = localStorage.getItem('timerThemeUnlocked');
+    if (unlockedStat === 'true') {
+      setIsUnlocked(true);
+    }
+  }, []);
+
+  const showToast = (msg) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage('');
+    }, 3000);
+  };
+
+  const applyTheme = (theme) => {
+    if (theme === 'mac') {
+      document.body.removeAttribute('data-theme');
+    } else {
+      document.body.setAttribute('data-theme', theme);
+    }
+  };
+
+  const handleSelectTheme = (themeId, isPremium) => {
+    if (isPremium && !isUnlocked) {
+      setExpandedTheme(expandedTheme === themeId ? null : themeId);
+      return;
+    }
+    
+    setCurrentTheme(themeId);
+    applyTheme(themeId);
+    localStorage.setItem('timerTheme', themeId);
+  };
+
+  const handleCodeSubmit = (e) => {
+    if (e) e.preventDefault();
+    if (secretCode.trim() === 'focus_2026') {
+      setIsUnlocked(true);
+      localStorage.setItem('timerThemeUnlocked', 'true');
+      showToast("테마 잠금이 해제되었습니다!");
+      setShowCodeInput(false);
+      setExpandedTheme(null);
+      setSecretCode('');
+    } else {
+      showToast("잘못된 시크릿 코드입니다.");
+    }
+  };
+
+  const premiumThemes = [
+    { id: 'retro', name: '레트로 픽셀 👾', bg: '#220033', border: '#ff00ff' },
+    { id: 'cyberpunk', name: '네온 사이버펑크 ⚡️', bg: '#090a0f', border: '#00ffff' },
+    { id: 'nature', name: '자연의 오아시스 🌿', bg: '#0F291E', border: '#48C9B0' },
+    { id: 'cotton_candy', name: '코튼 캔디 파스텔 🍬', bg: '#FFF0F5', border: '#87CEEB' },
+    { id: 'monochrome', name: '모노크롬 느와르 ♟️', bg: '#F8F9FA', border: '#000000' },
+    { id: 'sunset', name: '선셋 바이브 🌅', bg: '#2D0A31', border: '#EF476F' },
+    { id: 'ocean', name: '딥 오션 블루 🌊', bg: '#03045E', border: '#00B4D8' }
+  ];
+
+  return (
+    <>
+      <div className="theme-floating-btn" onClick={() => setIsOpen(true)}>
+        <div className="theme-icon-container">
+          <span className="theme-icon">🎨</span>
+        </div>
+        <span className="theme-text">테마 변경하기</span>
+      </div>
+
+      {isOpen && (
+        <div className="theme-modal-overlay" onClick={() => setIsOpen(false)}>
+          <div className="theme-modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="theme-modal-header">
+              <h2>테마 선택 🎨</h2>
+              <button className="theme-close-btn" onClick={() => setIsOpen(false)}>×</button>
+            </div>
+
+            <div className="theme-section">
+              <div className="theme-section-title">[ 내 테마 ]</div>
+              <div className="theme-list">
+                <div 
+                  className={`theme-item ${currentTheme === 'mac' ? 'active' : ''}`}
+                  onClick={() => handleSelectTheme('mac', false)}
+                >
+                  <div className="theme-item-left">
+                    <div className="theme-color-preview" style={{ background: '#000000', borderColor: '#FF9F0A' }}></div>
+                    <span className="theme-name">기본 맥북 스타일 {currentTheme === 'mac' && '(현재)'}</span>
+                  </div>
+                </div>
+                <div 
+                  className={`theme-item ${currentTheme === 'dark' ? 'active' : ''}`}
+                  onClick={() => handleSelectTheme('dark', false)}
+                >
+                  <div className="theme-item-left">
+                    <div className="theme-color-preview" style={{ background: '#1c1c1e', borderColor: '#0A84FF' }}></div>
+                    <span className="theme-name">다크 모드 🌙 {currentTheme === 'dark' && '(현재)'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="theme-section" style={{ marginBottom: 0 }}>
+              <div className="theme-section-title">{isUnlocked ? '[ 프리미엄 테마 ]' : '[ 테마 상점 (잠김) ]'}</div>
+              <div className="theme-list">
+                {premiumThemes.map((pt) => {
+                  const isActive = currentTheme === pt.id;
+                  const isExpanded = expandedTheme === pt.id;
+                  return (
+                    <div key={pt.id} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                      <div 
+                        className={`theme-item ${isActive ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}`} 
+                        onClick={() => handleSelectTheme(pt.id, true)}
+                      >
+                        <div className="theme-item-left">
+                          <div className="theme-color-preview" style={{ background: pt.bg, borderColor: pt.border }}></div>
+                          <span className="theme-name">{pt.name} {isActive && '(현재)'}</span>
+                        </div>
+                        {!isUnlocked && <div>🔒</div>}
+                      </div>
+
+                      {!isUnlocked && isExpanded && (
+                        <div className="theme-purchase-accordion">
+                          <a 
+                            href="https://polar.sh/" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="theme-purchase-btn"
+                          >
+                            🔒 Polar에서 테마 구매하기
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {!isUnlocked && (
+              <div className="theme-secret-section">
+                {!showCodeInput ? (
+                  <div 
+                    className="theme-secret-toggle"
+                    onClick={() => setShowCodeInput(true)}
+                  >
+                    이미 시크릿 코드가 있나요?
+                  </div>
+                ) : (
+                  <form className="theme-secret-form" onSubmit={handleCodeSubmit}>
+                    <input 
+                      type="text" 
+                      placeholder="focus_2026 입력..." 
+                      value={secretCode}
+                      onChange={(e) => setSecretCode(e.target.value)}
+                      className="theme-secret-input"
+                    />
+                    <button type="submit" className="theme-secret-btn">적용</button>
+                  </form>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {toastMessage && (
+        <div className="theme-toast">
+          {toastMessage}
+        </div>
+      )}
+    </>
+  );
+};
+
+export default ThemeButton;

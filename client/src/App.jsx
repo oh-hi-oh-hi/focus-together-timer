@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Host from './components/Host';
 import Guest from './components/Guest';
 import KofiButton from './components/KofiButton';
+import ThemeButton from './components/ThemeButton';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Route path="/host/:roomId" element={<Host />} />
                 <Route path="/join/:roomId" element={<Guest />} />
             </Routes>
+            <ThemeButton />
             <KofiButton />
         </BrowserRouter>
     );

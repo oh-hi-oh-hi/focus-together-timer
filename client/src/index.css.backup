@@ -4,9 +4,49 @@
   --bg-color: #000000;
   --text-color: #ffffff;
   --accent-color: #FF9F0A;
-  /* Mac OS orange */
   --accent-dark: #CC7E05;
   --ring-bg: #333333;
+}
+
+[data-theme="dark"] {
+  --bg-color: #1c1c1e;
+  --text-color: #f5f5f7;
+  --accent-color: #0A84FF;
+  --accent-dark: #0060d1;
+  --ring-bg: #2c2c2e;
+}
+
+[data-theme="retro"] {
+  --bg-color: #220033;
+  --text-color: #ff00ff;
+  --accent-color: #ff00ff;
+  --accent-dark: #cc00cc;
+  --ring-bg: #440066;
+  font-family: 'Courier New', Courier, monospace !important;
+}
+
+[data-theme="cyberpunk"] {
+  --bg-color: #090a0f;
+  --text-color: #00ffff;
+  --accent-color: #00ffff;
+  --accent-dark: #00cccc;
+  --ring-bg: #1a1c29;
+}
+
+[data-theme="nature"] {
+  --bg-color: #0F291E;
+  --text-color: #A3E4D7;
+  --accent-color: #48C9B0;
+  --accent-dark: #1ABC9C;
+  --ring-bg: #184A3B;
+}
+
+[data-theme="cotton_candy"] {
+  --bg-color: #FFF0F5;
+  --text-color: #FF69B4;
+  --accent-color: #87CEEB;
+  --accent-dark: #00BFFF;
+  --ring-bg: #FFE4E1;
 }
 
 [data-theme="monochrome"] {
@@ -15,6 +55,22 @@
   --accent-color: #000000;
   --accent-dark: #343A40;
   --ring-bg: #E9ECEF;
+}
+
+[data-theme="sunset"] {
+  --bg-color: #2D0A31;
+  --text-color: #FFD166;
+  --accent-color: #EF476F;
+  --accent-dark: #C1121F;
+  --ring-bg: #4A154B;
+}
+
+[data-theme="ocean"] {
+  --bg-color: #03045E;
+  --text-color: #CAF0F8;
+  --accent-color: #00B4D8;
+  --accent-dark: #0077B6;
+  --ring-bg: #023E8A;
 }
 
 * {
