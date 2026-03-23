@@ -28,14 +28,21 @@ function TimerDisplay({ duration, remaining }) {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
+        const theme = document.body.getAttribute('data-theme');
+        const isMono = theme === 'monochrome';
+        const bgColor = isMono ? '#F8F9FA' : '#000000';
+        const ringBg = isMono ? '#E9ECEF' : '#333333';
+        const accentColor = isMono ? '#000000' : '#FF9F0A';
+        const textColor = isMono ? '#212529' : '#FFFFFF';
+
         ctx.clearRect(0, 0, 300, 300);
-        ctx.fillStyle = '#000000';
+        ctx.fillStyle = bgColor;
         ctx.fillRect(0, 0, 300, 300);
 
         // Draw background circle
         ctx.beginPath();
         ctx.arc(150, 150, radius, 0, 2 * Math.PI);
-        ctx.strokeStyle = '#333333';
+        ctx.strokeStyle = ringBg;
         ctx.lineWidth = 6;
         ctx.stroke();
 
@@ -45,14 +52,14 @@ function TimerDisplay({ duration, remaining }) {
             const startAngle = -Math.PI / 2;
             const endAngle = startAngle + (percentage * 2 * Math.PI);
             ctx.arc(150, 150, radius, startAngle, endAngle, false);
-            ctx.strokeStyle = '#FF9F0A';
+            ctx.strokeStyle = accentColor;
             ctx.lineWidth = 6;
             ctx.lineCap = 'round';
             ctx.stroke();
         }
 
         // Draw text
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = textColor;
         ctx.font = '200 64px "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -62,6 +69,8 @@ function TimerDisplay({ duration, remaining }) {
     // PIP Canvas Drawing
     useEffect(() => {
         drawCanvas();
+        window.addEventListener('themeChanged', drawCanvas);
+        return () => window.removeEventListener('themeChanged', drawCanvas);
     }, [remaining, duration, percentage, radius]);
 
     const togglePip = async () => {

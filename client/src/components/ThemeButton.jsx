@@ -19,6 +19,7 @@ const ThemeButton = () => {
     } else {
       document.body.setAttribute('data-theme', theme);
     }
+    window.dispatchEvent(new Event('themeChanged'));
   };
 
   const handleSelectTheme = (themeId) => {
