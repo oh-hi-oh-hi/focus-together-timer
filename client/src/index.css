@@ -7,6 +7,8 @@
   /* Mac OS orange */
   --accent-dark: #CC7E05;
   --ring-bg: #333333;
+  --hero-gradient-start: #ffffff;
+  --hero-gradient-end: #999999;
 }
 
 [data-theme="monochrome"] {
@@ -15,6 +17,8 @@
   --accent-color: #000000;
   --accent-dark: #343A40;
   --ring-bg: #E9ECEF;
+  --hero-gradient-start: #6c757d;
+  --hero-gradient-end: #212529;
 }
 
 * {
@@ -168,6 +172,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 /* Time Setters and Control */
@@ -226,9 +231,11 @@ input[type="number"] {
   font-size: clamp(2.5rem, 8vw, 3.5rem);
   font-weight: 600;
   margin-bottom: 10px;
-  background: linear-gradient(135deg, #fff, #999);
+  background: linear-gradient(135deg, var(--hero-gradient-start), var(--hero-gradient-end));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
   text-align: center;
 }
 
