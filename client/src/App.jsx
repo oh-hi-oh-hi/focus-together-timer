@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import Home from './components/Home';
 import Host from './components/Host';
 import Guest from './components/Guest';
@@ -16,6 +17,7 @@ function App() {
             </Routes>
             <ThemeButton />
             <KofiButton />
+            <Analytics />
         </BrowserRouter>
     );
 }
