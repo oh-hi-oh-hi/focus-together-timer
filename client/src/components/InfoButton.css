@@ -1,6 +1,6 @@
-.theme-floating-btn {
+.info-floating-btn {
   position: fixed;
-  bottom: 84px; /* Above Ko-fi button */
+  bottom: 144px;
   right: 24px;
   display: flex;
   align-items: center;
@@ -17,14 +17,15 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   cursor: pointer;
+  padding: 0;
 }
 
-[data-theme="monochrome"] .theme-floating-btn {
+[data-theme="monochrome"] .info-floating-btn {
   background: rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.theme-icon-container {
+.info-icon-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,13 +33,13 @@
   height: 48px;
 }
 
-.theme-icon {
+.info-icon {
   font-size: 20px;
   opacity: 0.6;
   transition: all 0.4s ease;
 }
 
-.theme-text {
+.info-text {
   color: var(--text-color);
   font-weight: 500;
   font-size: 14px;
@@ -48,26 +49,26 @@
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.theme-floating-btn:hover {
-  width: 180px; /* expands smoothly */
+.info-floating-btn:hover {
+  width: 150px; /* expands smoothly */
   background: rgba(128, 128, 128, 0.15);
   box-shadow: 0 8px 32px rgba(128, 128, 128, 0.15);
   border: 1px solid rgba(128, 128, 128, 0.2);
   transform: translateY(-2px);
 }
 
-.theme-floating-btn:hover .theme-icon {
+.info-floating-btn:hover .info-icon {
   opacity: 1;
   font-size: 22px;
 }
 
-.theme-floating-btn:hover .theme-text {
+.info-floating-btn:hover .info-text {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* Modal styles */
-.theme-modal-overlay {
+.info-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -82,11 +83,11 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-.theme-modal-content {
+.info-modal-content {
   background: var(--bg-color);
   border-radius: 24px;
   width: 90%;
-  max-width: 400px;
+  max-width: 500px;
   padding: 32px;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(128, 128, 128, 0.2);
@@ -94,29 +95,29 @@
   animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-[data-theme="monochrome"] .theme-modal-overlay {
+[data-theme="monochrome"] .info-modal-overlay {
   background: rgba(0, 0, 0, 0.2);
 }
 
-.theme-modal-header {
+.info-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
 }
 
-.theme-modal-header h2 {
+.info-modal-header h2 {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
   letter-spacing: -0.5px;
 }
 
-.theme-close-btn {
+.info-close-btn {
   background: none;
   border: none;
   color: #888;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
   padding: 0;
   width: 32px;
@@ -127,59 +128,33 @@
   box-shadow: none;
 }
 
-.theme-close-btn:hover {
+.info-close-btn:hover {
   color: var(--text-color);
   background: none;
   transform: scale(1.1);
 }
 
-.theme-section {
-  margin-bottom: 12px;
+.info-section {
+  font-size: 1.05rem;
+  line-height: 1.6;
 }
 
-.theme-list {
+.info-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding-left: 24px;
+  margin: 0;
 }
 
-.theme-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  background: rgba(128, 128, 128, 0.05);
-  border-radius: 12px;
-  cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.2s;
+.info-list li {
+  margin-bottom: 8px;
   color: var(--text-color);
+  opacity: 0.9;
 }
 
-.theme-item:hover {
-  background: rgba(128, 128, 128, 0.1);
-}
-
-.theme-item.active {
-  border-color: var(--accent-color);
-  background: rgba(128, 128, 128, 0.1);
-}
-
-.theme-item-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.theme-color-preview {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid rgba(128, 128, 128, 0.2);
-}
-
-.theme-name {
-  font-weight: 500;
+.info-list li:last-child {
+  margin-bottom: 0;
 }
 
 @keyframes scaleUp {

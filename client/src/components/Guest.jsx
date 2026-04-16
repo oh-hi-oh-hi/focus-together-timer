@@ -3,8 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import { socket } from '../socket';
 import TimerDisplay from './TimerDisplay';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function Guest() {
+    const { t } = useLanguage();
     const { roomId } = useParams();
     const navigate = useNavigate();
 
@@ -140,9 +142,9 @@ function Guest() {
     if (errorMSG) {
         return (
             <div className="timer-container" style={{ textAlign: 'center' }}>
-                <h2 style={{ color: '#FF3B30' }}>오류 발생</h2>
+                <h2 style={{ color: '#FF3B30' }}>{t('guest.errorTitle')}</h2>
                 <p style={{ marginTop: '12px', color: '#AAA' }}>{errorMSG}</p>
-                <button className="secondary" style={{ marginTop: '24px' }} onClick={() => navigate('/')}>홈으로</button>
+                <button className="secondary" style={{ marginTop: '24px' }} onClick={() => navigate('/')}>{t('guest.goHome')}</button>
             </div>
         );
     }
@@ -152,11 +154,11 @@ function Guest() {
         return (
             <div className="modal-overlay">
                 <div className="modal">
-                    <h2>타이머에 참여하시겠습니까?</h2>
-                    <p>호스트가 시작하면 타이머가 자동으로 동기화됩니다.</p>
+                    <h2>{t('guest.joinTitle')}</h2>
+                    <p>{t('guest.joinDesc')}</p>
                     <div className="modal-actions">
-                        <button className="secondary" onClick={() => navigate('/')}>취소</button>
-                        <button onClick={confirmJoin}>승인</button>
+                        <button className="secondary" onClick={() => navigate('/')}>{t('guest.cancelBtn')}</button>
+                        <button onClick={confirmJoin}>{t('guest.approveBtn')}</button>
                     </div>
                 </div>
             </div>
@@ -164,26 +166,26 @@ function Guest() {
     }
 
     if (!joined) {
-        return <div className="timer-container"><p>접속 중...</p></div>;
+        return <div className="timer-container"><p>{t('guest.connecting')}</p></div>;
     }
 
     return (
         <div className="timer-container">
             {status === 'waiting' && (
                 <div className="status-text" style={{ marginBottom: 'clamp(10px, 3vmin, 40px)', animation: 'fadeIn 1s infinite alternate' }}>
-                    호스트가 시작하기를 기다리는 중...
+                    {t('guest.waitingHost')}
                 </div>
             )}
             {status === 'paused' && (
                 <div className="status-text" style={{ marginBottom: 'clamp(10px, 3vmin, 40px)', color: '#FF9F0A', animation: 'fadeIn 1s infinite alternate' }}>
-                    호스트가 타이머를 일시정지했습니다...
+                    {t('guest.hostPaused')}
                 </div>
             )}
 
             {status !== 'finished' && (
                 <div style={{ marginBottom: 'clamp(10px, 3vmin, 40px)', fontSize: '0.9rem', color: '#AAA', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                     <Users size={16} />
-                    현재 {userCount}명 접속 중
+                    {t('guest.usersOnline', { count: userCount })}
                 </div>
             )}
 
@@ -192,7 +194,7 @@ function Guest() {
             {status === 'finished' && (
                 <div style={{ marginTop: 'clamp(10px, 3vmin, 40px)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
                     <div style={{ color: '#FF9F0A', fontSize: '1.5rem', fontWeight: 600 }}>
-                        종료되었습니다!
+                        {t('guest.finished')}
                     </div>
                 </div>
             )}

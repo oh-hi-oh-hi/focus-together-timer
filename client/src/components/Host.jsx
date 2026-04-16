@@ -3,8 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Minus, Plus, Play, Pause, AlertCircle, Share2, Users } from 'lucide-react';
 import { socket } from '../socket';
 import TimerDisplay from './TimerDisplay';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function Host() {
+    const { t } = useLanguage();
     const { roomId } = useParams();
     const navigate = useNavigate();
     const [roomState, setRoomState] = useState(null);
@@ -155,7 +157,7 @@ function Host() {
     return (
         <div className="setup-container">
             <div className="room-code-container">
-                <p className="room-code-label">참여용 방 코드</p>
+                <p className="room-code-label">{t('host.codeLabel')}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <div className="room-code-box">
                         <h2 className="room-code-text">{roomId}</h2>
@@ -163,14 +165,14 @@ function Host() {
                     <button
                         onClick={handleShare}
                         className="share-btn"
-                        title="초대장 복사하기"
+                        title={t('host.copyTitle')}
                     >
                         <Share2 size={24} color="white" />
                     </button>
                 </div>
                 <div style={{ marginTop: '16px', fontSize: '0.9rem', color: '#AAA', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                     <Users size={16} />
-                    현재 {userCount}명 접속 중
+                    {t('host.usersOnline', { count: userCount })}
                 </div>
             </div>
 
@@ -197,7 +199,7 @@ function Host() {
                                 outline: 'none'
                             }}
                         />
-                        <span style={{ fontSize: 'clamp(1.1rem, 3.5vw, 1.2rem)', fontWeight: 500 }}>분</span>
+                        <span style={{ fontSize: 'clamp(1.1rem, 3.5vw, 1.2rem)', fontWeight: 500 }}>{t('host.minute')}</span>
                     </div>
                     <button className="time-btn" onClick={() => changeTime(1)}>
                         <Plus size={24} color="white" />
@@ -208,43 +210,43 @@ function Host() {
             {status === 'waiting' && (
                 <button onClick={startTimer} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 'clamp(5px, 2.5vmin, 20px)' }}>
                     <Play fill="white" size={20} />
-                    타이머 시작
+                    {t('host.startBtn')}
                 </button>
             )}
 
             {status === 'running' && (
                 <button onClick={pauseTimer} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 'clamp(5px, 2.5vmin, 20px)', backgroundColor: '#333' }}>
                     <Pause fill="white" size={20} />
-                    일시정지
+                    {t('host.pauseBtn')}
                 </button>
             )}
 
             {status === 'paused' && (
                 <button onClick={resumeTimer} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: 'clamp(5px, 2.5vmin, 20px)' }}>
                     <Play fill="white" size={20} />
-                    다시 시작
+                    {t('host.resumeBtn')}
                 </button>
             )}
 
             {status === 'finished' && (
                 <div style={{ marginTop: 'clamp(5px, 2.5vmin, 20px)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', animation: 'popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
                     <div style={{ color: '#FF9F0A', fontSize: '1.5rem', fontWeight: 600 }}>
-                        종료되었습니다!
+                        {t('host.finished')}
                     </div>
                     <div style={{ display: 'flex', gap: '12px' }}>
                         <button onClick={resetTimer} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <Play fill="white" size={20} />
-                            초기화 후 재설정
+                            {t('host.resetBtn')}
                         </button>
                         <button className="secondary" onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            홈으로
+                            {t('host.homeBtn')}
                         </button>
                     </div>
                 </div>
             )}
             {showToast && (
                 <div className="toast-notification">
-                    해당 방의 초대장이 클립보드에 복사되었습니다!
+                    {t('host.toast')}
                 </div>
             )}
         </div>

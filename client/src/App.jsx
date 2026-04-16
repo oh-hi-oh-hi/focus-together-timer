@@ -6,10 +6,14 @@ import Host from './components/Host';
 import Guest from './components/Guest';
 import KofiButton from './components/KofiButton';
 import ThemeButton from './components/ThemeButton';
+import InfoButton from './components/InfoButton';
+import LangButton from './components/LangButton';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 function App() {
     return (
-        <BrowserRouter>
+        <LanguageProvider>
+            <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/host/:roomId" element={<Host />} />
@@ -17,8 +21,11 @@ function App() {
             </Routes>
             <ThemeButton />
             <KofiButton />
+            <InfoButton />
+            <LangButton />
             <Analytics />
         </BrowserRouter>
+        </LanguageProvider>
     );
 }
 

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './ThemeButton.css';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const ThemeButton = () => {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState('mac');
 
@@ -35,14 +37,14 @@ const ThemeButton = () => {
         <div className="theme-icon-container">
           <span className="theme-icon" role="img" aria-label="theme">🎨</span>
         </div>
-        <span className="theme-text">테마 변경하기</span>
+        <span className="theme-text">{t('theme.changeBtn')}</span>
       </div>
 
       {isOpen && (
         <div className="theme-modal-overlay" onClick={() => setIsOpen(false)}>
           <div className="theme-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="theme-modal-header">
-              <h2>테마 선택 🎨</h2>
+              <h2>{t('theme.title')}</h2>
               <button className="theme-close-btn" onClick={() => setIsOpen(false)} aria-label="닫기">×</button>
             </div>
 
@@ -54,7 +56,7 @@ const ThemeButton = () => {
                 >
                   <div className="theme-item-left">
                     <div className="theme-color-preview" style={{ background: '#000000', borderColor: '#FF9F0A' }}></div>
-                    <span className="theme-name">기본 맥북 스타일 {currentTheme === 'mac' && '(현재)'}</span>
+                    <span className="theme-name">{t('theme.mac')} {currentTheme === 'mac' && t('theme.current')}</span>
                   </div>
                 </div>
                 
@@ -64,7 +66,7 @@ const ThemeButton = () => {
                 >
                   <div className="theme-item-left">
                     <div className="theme-color-preview" style={{ background: '#F8F9FA', borderColor: '#000000' }}></div>
-                    <span className="theme-name">모노크롬 느와르 ♟️ {currentTheme === 'monochrome' && '(현재)'}</span>
+                    <span className="theme-name">{t('theme.monochrome')} {currentTheme === 'monochrome' && t('theme.current')}</span>
                   </div>
                 </div>
               </div>

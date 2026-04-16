@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 function TimerDisplay({ duration, remaining }) {
+    const { t } = useLanguage();
     const canvasRef = useRef(null);
     const videoRef = useRef(null);
     const [isPipActive, setIsPipActive] = useState(false);
@@ -9,8 +11,8 @@ function TimerDisplay({ duration, remaining }) {
     useEffect(() => {
         const mins = Math.floor(remaining / 60).toString().padStart(2, '0');
         const secs = (remaining % 60).toString().padStart(2, '0');
-        document.title = `${mins}:${secs} - 집중`;
-    }, [remaining]);
+        document.title = t('timer.titleFocus', { min: mins, sec: secs });
+    }, [remaining, t]);
 
     const percentage = duration > 0 ? (remaining / duration) : 0;
     const radius = 140; // For a 300x300 viewBox, center 150,150
@@ -89,7 +91,7 @@ function TimerDisplay({ duration, remaining }) {
                     // Check if captureStream is supported
                     const getStream = canvas.captureStream || canvas.webkitCaptureStream || canvas.mozCaptureStream;
                     if (!getStream) {
-                        alert('현재 브라우저 환경에서는 PIP 화면 캡처 기능을 지원하지 않습니다.\n크롬 호환 브라우저를 권장합니다!');
+                        alert(t('timer.pipErrorNotSupported'));
                         return;
                     }
 
@@ -110,14 +112,14 @@ function TimerDisplay({ duration, remaining }) {
                         video.webkitSetPresentationMode('picture-in-picture');
                         setIsPipActive(true);
                     } else {
-                        alert('이 브라우저에서는 기능(PIP)을 지원하지 않습니다.');
+                        alert(t('timer.pipErrorNoFeature'));
                         return;
                     }
                 }
             }
         } catch (error) {
             console.error('PIP Error:', error);
-            alert('PIP 기능을 실행할 수 없습니다.\n데스크탑 크롬, 엣지, 사파리를 이용해 주세요!');
+            alert(t('timer.pipErrorFail'));
         }
     };
 
@@ -189,7 +191,7 @@ function TimerDisplay({ duration, remaining }) {
                             transition: 'all 0.2s ease'
                         }}
                     >
-                        {isPipActive ? 'PIP 끄기' : '플로팅 모드(PIP)'}
+                        {isPipActive ? t('timer.pipOff') : t('timer.pipOn')}
                     </button>
                 )}
 

@@ -1,0 +1,78 @@
+.lang-toggle-container {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08); /* Mac OS glassmorphism style */
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  padding: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  width: 120px;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+[data-theme="monochrome"] .lang-toggle-container {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.lang-toggle-bg {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 54px; /* width of one button */
+  height: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="monochrome"] .lang-toggle-bg {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.lang-toggle-bg.ko {
+  transform: translateX(0);
+}
+
+.lang-toggle-bg.en {
+  transform: translateX(56px); /* Container inside is 112px wide. 112 - 54 = 58 max translation. 56 centers it well. */
+}
+
+.lang-toggle-btn {
+  flex: 1;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.5;
+  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lang-toggle-btn.active {
+  opacity: 1;
+  font-weight: 600;
+}
+
+.lang-toggle-btn:hover {
+  background: transparent;
+  transform: none;
+  box-shadow: none;
+}

@@ -1,7 +1,9 @@
 import React from 'react';
 import './KofiButton.css';
+import { useLanguage } from '../contexts/LanguageContext';
 
 const KofiButton = () => {
+  const { t } = useLanguage();
   return (
     <a
       href="https://ko-fi.com/oh_hi_oh_hi"
@@ -12,7 +14,7 @@ const KofiButton = () => {
       <div className="kofi-icon-container">
         <span className="kofi-icon">☕️</span>
       </div>
-      <span className="kofi-text">개발자에게 커피 사주기 ☕️</span>
+      <span className="kofi-text">{t('kofi.tooltip')}</span>
     </a>
   );
 };
