@@ -12,6 +12,10 @@ const ThemeButton = () => {
     if (savedTheme) {
       setCurrentTheme(savedTheme);
       applyTheme(savedTheme);
+    } else {
+      setCurrentTheme('mac');
+      applyTheme('mac');
+      localStorage.setItem('timerTheme', 'mac');
     }
   }, []);
 

@@ -134,6 +134,23 @@ export const LanguageProvider = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('appLang', language);
+    
+    // Update meta descriptions dynamically based on language
+    const descriptionKo = "Timer Together - 참가자 모두에게 보이는 동시 작동 타이머. 친구, 동료와 함께 타이머를 공유하고 집중력을 높여보세요.";
+    const descriptionEn = "Timer Together - A simultaneous operation timer visible to all participants. Share timers with friends and colleagues to boost your focus.";
+    
+    const descText = language === 'ko' ? descriptionKo : descriptionEn;
+    
+    // Update or create meta tags
+    const updateMetaTag = (selector, attribute, value) => {
+      let meta = document.querySelector(selector);
+      if (meta) {
+        meta.setAttribute(attribute, value);
+      }
+    };
+
+    updateMetaTag('meta[name="description"]', 'content', descText);
+    updateMetaTag('meta[property="og:description"]', 'content', descText);
   }, [language]);
 
   const t = (key, params = {}) => {
