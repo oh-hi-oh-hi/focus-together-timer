@@ -36,7 +36,7 @@ const InfoButton = () => {
             </div>
             <div className="info-section">
               <ol className="info-list">
-                <li><span dangerouslySetInnerHTML={{ __html: t('info.desc1').replace('Focus Together', '<strong>Focus Together</strong>') }} /></li>
+                <li><span dangerouslySetInnerHTML={{ __html: t('info.desc1').replace('Timer Together', '<strong>Timer Together</strong>') }} /></li>
                 <li>{t('info.desc2')}</li>
                 <li>{t('info.desc3')}</li>
                 <li>{t('info.desc4')}</li>

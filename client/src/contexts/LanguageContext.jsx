@@ -37,7 +37,7 @@ const translations = {
     
     'info.tooltip': '사용방법 보기',
     'info.title': '사용방법',
-    'info.desc1': 'Focus Together는 초대한 사용자 모두에게 동시에 작동하는 동시 타이머 입니다.',
+    'info.desc1': 'Timer Together는 초대한 사용자 모두에게 동시에 작동하는 동시 타이머 입니다.',
     'info.desc2': '방을 만드세요.',
     'info.desc3': '함께 타이머를 볼 사람에게 방의 초대장을 공유하세요.',
     'info.desc4': '시간을 정하고 시작하세요. 방에 입장한 사람은 모두 현재 작동 하는 타이머를 본인들의 장치에서 동시에 보게 됩니다.',
@@ -98,7 +98,7 @@ const translations = {
     
     'info.tooltip': 'How to use',
     'info.title': 'How to use',
-    'info.desc1': 'Focus Together is a synchronized timer for all invited users.',
+    'info.desc1': 'Timer Together is a synchronized timer for all invited users.',
     'info.desc2': 'Create a room.',
     'info.desc3': 'Share the room invite with people you want to focus with.',
     'info.desc4': 'Set the time and start. Everyone in the room will see the same timer running simultaneously.',

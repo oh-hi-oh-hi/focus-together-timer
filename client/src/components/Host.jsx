@@ -143,7 +143,7 @@ function Host() {
 
     const handleShare = () => {
         const url = window.location.origin;
-        const appText = `Focus Together Timer\n방 코드: ${roomId}\n접속 주소: ${url}`;
+        const appText = `Timer Together Timer\n방 코드: ${roomId}\n접속 주소: ${url}`;
         navigator.clipboard.writeText(appText)
             .then(() => {
                 setShowToast(true);
